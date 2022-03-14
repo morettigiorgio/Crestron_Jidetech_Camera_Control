@@ -1,0 +1,67 @@
+/*******************************************************************************************
+  SIMPL+ Module Information
+  (Fill in comments below)
+*******************************************************************************************/
+/*
+Dealer Name:	Crestron	Electronics
+System Name:
+System Number:
+Programmer:		Moretti Giorgio
+Comments:
+*/
+
+/*******************************************************************************************
+  Compiler Directives
+  (Uncomment and declare compiler directives as needed)
+*******************************************************************************************/
+#SYMBOL_NAME "Jedetech Command Header"
+#HINT "PCHJO2"
+#CATEGORY "19" // Camera
+#DEFAULT_VOLATILE
+// #DIGITAL_EXPAND 
+// #ANALOG_SERIAL_EXPAND 
+// #OUTPUT_SHIFT 
+// #DEFAULT_NONVOLATILE
+#ENABLE_STACK_CHECKING
+#HELP_BEGIN
+	Crea una stringa in uscita adatta a comunicare con le Camere Jedetech
+    Con HTTP_type si setta HTTP/1.0 o HTTP/1.1
+
+	OUT:
+	HTTP_Header$= "GET /cgi/ptz_set?Channel=1&Group=PTZCtrlInfo&" + cmd$ + " HTTP/1.1\r\n"
+	o 
+	HTTP_Header$= "GET /cgi/ptz_set?Channel=1&Group=PTZCtrlInfo&" + cmd$ + " HTTP/1.0\r\n"
+
+	Moretti Giorgio
+#HELP_END
+/*******************************************************************************************
+  DIGITAL, ANALOG and SERIAL INPUTS and OUTPUTS
+  (Uncomment and declare inputs and outputs as needed)
+*******************************************************************************************/
+DIGITAL_INPUT HTTP_type;
+STRING_INPUT cmd$[64];
+
+STRING_OUTPUT HTTP_Header$;
+/*******************************************************************************************
+  Event Handlers
+  (Uncomment and declare additional event handlers as needed)
+*******************************************************************************************/
+CHANGE cmd$
+{
+	IF (HTTP_type){
+		HTTP_Header$= "GET /cgi/ptz_set?Channel=1&Group=PTZCtrlInfo&" + cmd$ + " HTTP/1.1\r\n";
+	}ELSE{
+		HTTP_Header$= "GET /cgi/ptz_set?Channel=1&Group=PTZCtrlInfo&" + cmd$ + " HTTP/1.0\r\n";
+	}
+}
+/*******************************************************************************************
+  Main()
+  Uncomment and place one-time startup code here
+  (This code will get called when the system starts up)
+*******************************************************************************************/
+/*
+Function Main()
+{
+}
+*/
+
